@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkloho3"]=self["webpackChunkloho3"]||[]).push([[802],{9802:function(e,n,t){t.r(n),t.d(n,{default:function(){return i}});var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",{staticClass:"video-manage"},[e._v(" 视频管理 ")])},u=[],l={name:"video-manage",components:{},mixins:[],data(){return{}},mounted(){}},o=l,s=t(1001),r=(0,s.Z)(o,a,u,!1,null,null,null),i=r.exports}}]);
+//# sourceMappingURL=802.5e2000bd.js.map

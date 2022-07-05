@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkloho3"]=self["webpackChunkloho3"]||[]).push([[721],{9721:function(n,e,t){t.r(e),t.d(e,{default:function(){return o}});var u=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",{staticClass:"picture-manage"},[n._v(" 图片管理 ")])},a=[],c={name:"picture-manage",components:{},mixins:[],data:function(){return{}},mounted:function(){}},l=c,r=t(1001),i=(0,r.Z)(l,u,a,!1,null,null,null),o=i.exports}}]);
+//# sourceMappingURL=721-legacy.3a2b11bc.js.map

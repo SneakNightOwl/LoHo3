@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkloho3"]=self["webpackChunkloho3"]||[]).push([[867],{9867:function(e,n,t){t.r(n),t.d(n,{default:function(){return c}});var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",{staticClass:"advert-manage"},[e._v(" 广告管理 ")])},u=[],l={name:"advert-manage",components:{},mixins:[],data(){return{}},mounted(){}},r=l,s=t(1001),o=(0,s.Z)(r,a,u,!1,null,null,null),c=o.exports}}]);
+//# sourceMappingURL=867.1752e229.js.map

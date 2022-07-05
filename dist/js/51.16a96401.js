@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkloho3"]=self["webpackChunkloho3"]||[]).push([[51],{3051:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",{staticClass:"member-center"},[e._v(" 会员中心 ")])},u=[],l={name:"member-center",components:{},mixins:[],data(){return{}},mounted(){}},s=l,c=t(1001),a=(0,c.Z)(s,r,u,!1,null,null,null),o=a.exports}}]);
+//# sourceMappingURL=51.16a96401.js.map

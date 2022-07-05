@@ -1,0 +1,11 @@
+{
+  id:"@id()",//得到随机的id值
+  username:"@cname()", //生成随机的中文名字
+  date:"@date()", //生成随机的日期
+  avatar:"@image('900x200','skyblue','#000','游所为')",  //生成随机的图片，参数:size, background, foreground, text
+  description:"@paragraph", //随机的描述信息
+  ip:"@ip()",
+  email:"@email()",
+  permission:{
+    "first-menu-ctrl":"first-menu-ctrl"}
+}
