@@ -27,8 +27,9 @@
           </p>
         </div>
         <div :class="[mo==1?'info-open':'info-hide']">
+          <!-- <div class="info-open">  -->
           <div class="info-des">
-             杭州列飞公司员工
+            杭州XX公司
           </div>
           <div class="btn-con">
             <el-button class="logout-btn" @click="logout">退出登录</el-button>
@@ -71,6 +72,7 @@
   </div>
 </template>
 <script>
+// import { getToken, setToken, removeToken, getMenu, setMenu, removeMenu, getPermission, setPermission, removePermission, getUserName, setUserName, removeUserName, getAvatar, setAvatar, removeAvatar } from '@/utils/auth';
 export default {
   name: 'Layout',
   components: {
@@ -111,6 +113,26 @@ export default {
           icon: 'el-icon-truck',
           path: '/article-mng/distribution-center',
         },
+        //文章管理-产品概览
+        {
+          name: '产品概览',
+          index: '4',
+          icon: 'el-icon-present',
+          path: '/article-mng/overview-production',
+        },
+        //
+        {
+          name: '产品轮播',
+          index: '5',
+          icon: 'el-icon-shopping-bag-1',
+          path: '/article-mng/swiper-production',
+        },
+        {
+          name: '地图中心',
+          index: '6',
+          icon: 'el-icon-map-location',
+          path: '/article-mng/map-center',
+        },
       ],
       //控制台
       consoleArr: [
@@ -136,43 +158,70 @@ export default {
           path: '/console-desk/video-manage',
         },
       ],
-      mo:0
+      mo: 0,
     };
   },
   methods: {
     //渲染用户基本数据
     showUser() {
-      if (this.$store.state.userobj && this.$store.state.userobj != '') {
-        let userobj = this.$store.state.userobj;
-        this.username = userobj.username;
-        if (userobj.permission) {
-          if (userobj.permission['first-menu-ctrl'] != '') {
+      if (this.$store.state.user && this.$store.state.user != '') {
+        let user = this.$store.state.user;
+        console.log(user);
+        this.username = user.username;
+        if (user.permission) {
+          if (user.permission['first-menu-ctrl'] != '') {
             this.region = 1;
-          } else if (userobj.permission['second-menu-ctrl'] != '') {
+          } else if (user.permission['second-menu-ctrl'] != '') {
+            this.region = 2;
+          }
+          console.log(this.region);
+        }else {
+          console.log('region丢失');
+          //重新给state.user赋值
+          // let permission = getPermission();
+          // let avatar = getAvatar();
+          // let nickname = getUserName();
+          // let token = getToken();
+          // this.$store.commit('user/SET_PERMISSION',permission);
+          // this.$store.commit('user/SET_AVATAR',avatar);
+          // this.$store.commit('user/SET_NAME',nickname);
+          // this.$store.commit('user/SET_TOKEN',token);
+          //上面这部分代码已经封装进vuex的user模块
+          this.$store.dispatch('user/refillUser');
+          console.log(this.$store.state.user);
+          if (user.permission['first-menu-ctrl'] != '') {
+            this.region = 1;
+          } else if (user.permission['second-menu-ctrl'] != '') {
             this.region = 2;
           }
         }
       } else {
+        // console.log('找不到user');
+        // let permission = getPermission();
+        // console.log(permission);
         //没有用户数据就回到登录页面重新登录(基本上是刷新页面造成的)
-         this.$message.error('登录状态失效，请重新登录');
-         setTimeout(()=> {
-           this.$router.push({name:'login'});
-         },1500)
+        this.$message.error('登录状态失效，请重新登录');
+        setTimeout(() => {
+          this.$router.push({ name: 'login' });
+        }, 1500);
       }
     },
     //退出登录
     logout() {
-       let _this = this;
-       _this.$confirm('是否退出登录?', '提示', {
+      let _this = this;
+      _this
+        .$confirm('是否退出登录?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.commit('logout');
-          setTimeout(()=> {
-            this.$router.push({name:'login'});
-          },1500)
+          type: 'warning',
         })
+        .then(() => {
+          this.$store.dispatch('user/logout').then(() => {
+            setTimeout(() => {
+              this.$router.push({ name: 'login' });
+            }, 1500);
+          });
+        });
     },
     //选择导航
     handleSelect(key, keyPath) {
@@ -258,6 +307,13 @@ export default {
     //     return this.$route.path
     //   }
     // }
+    // 'this.$store.state'(newVal, oldVal) {
+    //   console.log(newVal,'newVal');
+    //   console.log(oldVal,'oldVal');
+    //   this.$store.commit('setToken');
+    //   this.$store.commit('setName');
+    //   this.$store.commit('setPermission');
+    // }
   },
 };
 </script>
@@ -271,8 +327,8 @@ export default {
   padding: 61px 0 0;
   box-sizing: border-box;
   div {
-    font-size: 20px;
-    font-weight: bold;
+    // font-size: 20px;
+    // font-weight: bold;
   }
 
   .top-nav {
@@ -309,11 +365,11 @@ export default {
     }
 
     .user-con {
-      width:200px;
+      width: 200px;
       position: absolute;
       right: 0;
       top: 5px;
-  
+
       .user-tit {
         height: 26px;
         color: #333333;
@@ -328,85 +384,87 @@ export default {
 
       // 隐藏信息
       .info-open {
-         width:200px;
+        width: 200px;
+        height: 92px;
         // height:0;
         background: #ffffff;
-        position:absolute;
-        top:53px;
-        right:15%;
+        position: absolute;
+        top: 53px;
+        right: 15%;
         box-shadow: 1px 1px 3px 1px #dad9d9;
         border-radius: 5px;
+        padding: 0 0 10px;
         // visibility: hidden;
-        animation:slidOpen 0.5s ease;
-         .info-des {
+        animation: slidOpen 0.5s ease;
+        .info-des {
           text-align: center;
-          height:30px;
-          padding:10px 5px 5px;
-          color:#666666;
-          font:normal 12px Arial;
+          height: 30px;
+          padding: 10px 5px 5px;
+          color: #666666;
+          font: normal 12px Arial;
         }
 
         .logout-btn {
           display: block;
-          margin:0 auto;
+          margin: 0 auto;
         }
       }
       .info-hide {
-         width:200px;
-        height:0;
+        width: 200px;
+        height: 0;
         background: #ffffff;
-        position:absolute;
-        top:53px;
-        right:15%;
+        position: absolute;
+        top: 53px;
+        right: 15%;
         box-shadow: 1px 1px 3px 1px #dad9d9;
         border-radius: 5px;
         visibility: hidden;
-        animation:slidClose 0.5s ease;
+        animation: slidClose 0.5s ease;
         //  height:0;
         // visibility: hidden;
         // opacity: 0;
         .info-des {
           text-align: center;
-          height:30px;
-          padding:10px 5px 5px;
-          color:#666666;
-          font:normal 12px Arial;
+          height: 30px;
+          padding: 10px 5px 5px;
+          color: #666666;
+          font: normal 12px Arial;
         }
 
         .logout-btn {
           display: block;
-          margin:0 auto;
+          margin: 0 auto;
         }
       }
       @keyframes slidOpen {
         0% {
           visibility: hidden;
-          height:0;
-          opacity: 0;
+          transform: scaleY(0);
+          transform-origin: 0 0;
         }
         100% {
           visibility: visible;
-          height:92px;
-          opacity: 100;
+          transform: scaleY(100%);
+          transform-origin: 0 0;
         }
       }
       @keyframes slidClose {
         0% {
           visibility: visible;
-          height:92px;
-          opacity: 100;
+          transform: scaleY(100%);
+          transform-origin: 0 0;
         }
         50% {
-          visibility: hidden;
+          visibility: hidden; //解决下拉框缩回去时会闪一下的bug
         }
         100% {
-           height:0;
-          opacity: 0;
+          height: 0;
+          transform: scaleY(0);
+          transform-origin: 0 0;
           visibility: hidden;
         }
       }
     }
-      
   }
 
   .side-wrapper {
@@ -424,9 +482,13 @@ export default {
     // padding-left: 200px;
     background-color: #f7faf9;
     overflow-y: auto;
+    height: 100%;
 
     .content-container {
+      box-sizing: border-box;
+      height: 100%;
       padding: 24px 20px 64px;
+      // background: #fff;
     }
   }
 }

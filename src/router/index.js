@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout';
+import { getToken } from  '@/utils/auth';
+import { Message } from 'element-ui';
 
 Vue.use(Router)
 
@@ -39,6 +41,46 @@ const constantRoutes = [
         meta:{
           permission:'second-menu-ctrl',
           activeMenu:'/article-mng/distribution-center/'
+        }
+      },
+      //产品概览
+      {
+        path: '/article-mng/overview-production',
+        name: 'overview-production',
+        component: ()=>import('@/views/article-mng/overview-production'),
+        meta:{
+          permission:'second-menu-ctrl',
+          activeMenu:'/article-mng/overview-production/'
+        }
+      },
+      //产品详情
+      {
+        path: 'article-mng/production-detail/:id',
+        name: 'production-detail',
+        component: ()=>import('@/views/article-mng/production-detail'),
+        meta:{
+          permission:'second-menu-ctrl',
+          activeMenu:'/article-mng/production-detail/'
+        }
+      },
+      //产品-轮播图
+      {
+        path: 'article-mng/swiper-production',
+        name: 'swiper-production',
+        component: ()=>import('@/views/article-mng/swiper-production'),
+        meta:{
+          permission:'second-menu-ctrl',
+          activeMenu:'/article-mng/swiper-production/'
+        }
+      },
+      //地图中心
+      {
+        path: 'article-mng/map-center',
+        name: 'map-center',
+        component: ()=>import('@/views/article-mng/map-center'),
+        meta:{
+          permission:'second-menu-ctrl',
+          activeMenu:'/article-mng/map-center/'
         }
       },
       //控制台-广告管理
@@ -109,5 +151,24 @@ export function resetRouter(){
 //     next();
 //   }
 // });
+ 
+ 
+ router.beforeEach((to,from,next)=>{
+    let token = getToken();
+    console.log(token);
+    if(to.path!=='/login') {
+      if(!token) {
+        Message.error('登录状态已过期，请重新登录');
+        setTimeout(()=>{
+          // router.redirect;
+          router.push({path:'/login'});
+        },1000)
+      }else {
+        next();
+      }
+    }else {
+      next();
+    }
+ })
 
 export default router;

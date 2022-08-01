@@ -9,6 +9,7 @@ const mockDir = path.join(process.cwd(), 'mock')
 function registerRoutes(app) {
   let mockLastIndex
   const { mocks } = require('./index.js')
+  console.log('mock-server started');
   const mocksForServer = mocks.map(route => {
     return responseFake(route.url, route.type, route.response)
   })

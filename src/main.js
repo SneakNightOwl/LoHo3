@@ -6,6 +6,7 @@ import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+// import '../node_modules/swiper/css/swiper.css'; //swiper的样式
 // import '@/assets/style/reset.css'
 import '@/assets/style/base.css'
 import less from 'less';
@@ -15,7 +16,7 @@ import '../mock/index';
 
 Vue.config.productionTip = false
 
-//开发环境使用mock服务
+//开发环境使用mockjs
 if (process.env.NODE_ENV === 'development') {
   const { mockXHR } = require('../mock')
   mockXHR()

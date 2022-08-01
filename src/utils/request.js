@@ -3,6 +3,8 @@
 import Vue from 'vue';
 import axios from 'axios';
 import { Message } from 'element-ui';
+import { getToken } from './auth';
+import store from '@/store';
 
 let config = {
   baseURL: process.env.VUE_APP_BASE_URL,
@@ -15,6 +17,10 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    if(store.getters.token) {
+      config.headers['token'] = getToken();
+    }
+    console.log(config);
     return config;
   },
   function(error) {
@@ -25,8 +31,9 @@ _axios.interceptors.request.use(
 
 _axios.interceptors.response.use(
   function(response) {
+    console.log(response);
     // Cookies.remove('jumpLoginFlag');
-    if (response.data.code && response.data.code !== '0000') {
+    if (!response.data.code && response.data.code !== '200') {
       if (response.data.code === '0012') {
         Message.error({
           message: '服务器出现未知错误,正在排查问题',
@@ -36,8 +43,10 @@ _axios.interceptors.response.use(
       } else {
         Message.error('服务器出现未知错误,正在排查问题');
       }
+    }else {
+
+      return response.data;
     }
-    return response.data;
   },
   function(error) {
     // if (error.response && error.response.status === 301) {

@@ -1,4 +1,4 @@
-
+// const Mock = require('mockjs');
 const tokens = {
   admin: {
     token: 'admin-token'
@@ -8,8 +8,9 @@ const tokens = {
   }
 }
 
-const users = {
-  'admin-token': {
+const users = [
+  {
+    token:'admin-token', 
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
@@ -18,7 +19,8 @@ const users = {
       "first-menu-ctrl":"first-menu-ctrl"
     }
   },
-  'editor-token': {
+  {
+    token: 'editor-token',
     roles: ['editor'],
     introduction: 'I am an editor',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
@@ -27,19 +29,19 @@ const users = {
       "second-menu-ctrl":"second-menu-ctrl"
     }
   }
-}
+]
 
 module.exports = [
   // user login
   {
-    url: '/users/issignin',
+    url: '/vue-admin-template/users/issignin',
     type: 'post',
     response: config => {
       const { username } = config.body
-      const token = tokens[username]
+      const data = tokens[username]
 
       // mock error
-      if (!token) {
+      if (!data) {
         return {
           code: 60204,
           message: 'Account and password are incorrect.'
@@ -47,28 +49,34 @@ module.exports = [
       }
 
       return {
-        code: 0000,
-        data: token
+        code: 200,
+        data: data
       }
     }
   },
 
   // get user info
   {
-    url: 'user/info\.*',
-    type: 'get',
+    url: '/vue-admin-template/users/getInfo',
+    type: 'post',
     response: config => {
-      const { token } = config.query
-      const info = users[token]
+      const { token } = config.body;
+      // const info = users[token]
+      let info;
+      users.forEach(ele=>{
+        if(ele.token == token) {
+          info = ele;
+        }
+      })
 
       // mock error
-      if (!info) {
+      if (!token) {
         return {
+          // query:config.query,
           code: 500,
           message: 'Login failed, unable to get user details.'
         }
       }
-
       return {
         code: 200,
         data: info

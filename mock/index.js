@@ -5,6 +5,7 @@ const Mock = require("mockjs"); //mockjs 导入依赖模块
 const JSON5 = require("json5"); //json5的作用是可以解析json文件中的注释
 
 const user = require('./user');
+const overviewProduction = require('./mockApi/clothes.js');
 
 //读取json文件
 function getJsonFile(filePath) {
@@ -29,7 +30,8 @@ function getJsonFile(filePath) {
 //   }
 // };
 const mocks = [
-  ...user
+  ...user,
+  ...overviewProduction
 ]
 
 function mockXHR() {

@@ -5,7 +5,7 @@ import request from '@/utils/request';
 //登录 获取token
 export function issignin(data) {
   return request({
-    url: '/users/issignin',
+    url: '/vue-admin-template/users/issignin',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function issignin(data) {
 //登录 获取权限相关
 export function getInfo(data) {
   return request({
-    url: '/users/getInfo',
+    url: '/vue-admin-template/users/getInfo',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function getInfo(data) {
 //登出
 export function logout(data) {
   return request({
-    url: '/users/logout',
+    url: '/vue-admin-template/users/logout',
     method: 'post',
     data
   })

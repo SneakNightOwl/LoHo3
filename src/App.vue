@@ -7,7 +7,19 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {}
+  },
+  created() {
+    //防止刷新造成state数据丢失
+    window.addEventListener('beforeunload',()=>{
+      sessionStorage.setItem('store',JSON.stringify(this.$store.state))
+    })
+    if(sessionStorage.getItem('store')) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))))
+    }
+  },
 }
 </script>
 

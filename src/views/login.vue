@@ -7,7 +7,7 @@
           <el-input v-model="loginForm.nickname"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="loginForm.password"></el-input>
+          <el-input v-model="loginForm.password" show-password></el-input>
         </el-form-item>
         <!-- <el-form-item label="手机号">
             <el-input v-model="loginForm.mobile"></el-input>
@@ -20,7 +20,7 @@
 </template>
 <script>
 // import $axios from '@/plugins/request';
-import {issignin} from '../api/user';
+import { issignin } from '../api/user';
 export default {
   name: 'login',
   components: {
@@ -42,10 +42,19 @@ export default {
         password: '',
         mobile: '',
       },
+      redirect: undefined,
     };
   },
+  watch: {
+    $route: {
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect;
+      },
+      immediate: true,
+    },
+  },
   methods: {
-   async loginSub(formName) {
+    async loginSub(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // let baseUrl = this.GLOBAL.BASE_URL;
@@ -69,23 +78,31 @@ export default {
       //      method:'post',
       //      data:param
       //    });
-      let res = await issignin(param);
-            console.log(res);
-            if (res && res.success) {
-              this.$message({
-                message: '登陆成功',
-                type: 'success',
-              });
-              // console.log(res.data.user);
-              let userobj = JSON.parse(JSON.stringify(res.user));
-              this.$store.commit('login', userobj); //同步操作，直接调用mutations里的方法存入state里
-              //这里不能用路由来传参，因为layout做了路由重定向
-              setTimeout(() => {
-                this.$router.push({ name: 'Layout' });
-              }, 1500);
-            }
-          // });
-    }
+      //  let res = await issignin(param);
+      // console.log(res);
+      // if (res && res.code=='0000') {
+      // this.$message({
+      //   message: '登陆成功',
+      //   type: 'success',
+      // });
+      // let token = res.data.token;
+      this.$store.dispatch('user/login', this.loginForm).then((token) => {
+        console.log('121');
+        this.$store.dispatch('user/getInfo').then(() => {
+          this.$router.push({ path: '/' });
+        });
+        //  this.$router.push({path:this.redirect||'/'})
+      });
+      // console.log(res.data.user);
+      // let userobj = JSON.parse(JSON.stringify(res.user));
+      //this.$store.commit('login', userobj); //同步操作，直接调用mutations里的方法存入state里
+      //这里不能用路由来传参，因为layout做了路由重定向
+      // setTimeout(() => {
+      //   this.$router.push({ name: 'Layout' });
+      // }, 1500);
+      // }
+      // });
+    },
   },
 };
 </script>
@@ -98,15 +115,16 @@ export default {
   //   color: @basecolor;
   color: red;
   position: relative;
-  background: linear-gradient(to bottom, #e8f4f5, #6ff1fd);
+  // background: linear-gradient(to bottom, #e8f4f5, #6ff1fd);
+  background: linear-gradient(to bottom, #41557a, #162f5e);
   div {
     font-size: 20px;
     font-weight: bold;
   }
 
   .middle-con {
-    width:640px;
-    height:198px;
+    width: 640px;
+    height: 198px;
     position: absolute;
     top: 50%;
     left: 50%;
