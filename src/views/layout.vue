@@ -39,8 +39,8 @@
 
     </div>
     <!-- 侧栏 -->
-    <el-row class="tac side-wrapper">
-      <el-col :span="4">
+    <el-row class="side-wrapper">
+      <!-- <div class="tac"> -->
         <!-- 文章管理中心 -->
         <el-menu :default-active="defaultPath" router class="el-menu-vertical-demo side-nav" @open="arHandleOpen" @close="arHandleClose">
           <!-- <el-submenu index="1">
@@ -60,14 +60,14 @@
             <span slot="title">{{item.name}}</span>
           </el-menu-item>
         </el-menu>
-      </el-col>
-      <el-col :span="20">
+      <!-- </div> -->
+      <!-- <div class=""> -->
         <div class="content">
           <div class="content-container">
             <router-view></router-view>
           </div>
         </div>
-      </el-col>
+      <!-- </div> -->
     </el-row>
   </div>
 </template>
@@ -468,17 +468,24 @@ export default {
   }
 
   .side-wrapper {
+    width:100%;
     height: 100%;
+    display: flex;
+    flex-direction: row;
+    position:absolute;
+
     > .el-col {
       height: 100%;
     }
   }
   .side-nav {
+    width:200px;
     height: 100%;
     overflow: auto;
     // min-height:900px;
   }
   .content {
+    flex: 1;
     // padding-left: 200px;
     background-color: #f7faf9;
     overflow-y: auto;
